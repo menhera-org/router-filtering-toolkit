@@ -1,0 +1,7 @@
+-A OUTPUT -p tcp -m tcp --dport 25 -j DROP
+-A OUTPUT -p udp -m udp --dport 25 -j DROP
+
+# Allow peering segments
+-A INPUT -i en-peering -s 2001:db8::/64 -j ACCEPT
+-A OUTPUT -o en-peering -d 2001:db8::/64 -j ACCEPT
+
