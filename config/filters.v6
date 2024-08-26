@@ -1,3 +1,4 @@
+# No mail sending from router itself
 -A OUTPUT -p tcp -m tcp --dport 25 -j DROP
 -A OUTPUT -p udp -m udp --dport 25 -j DROP
 
