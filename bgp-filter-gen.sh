@@ -8,7 +8,7 @@ AS_CONFIG_FILE=$DIR/config/as-config.env
 SPEC_FILE=$DIR/config/bgp-filters.txt
 [ -f "$AS_CONFIG_FILE" ] && . "$AS_CONFIG_FILE"
 
-command -v bgpq4 || {
+command -v bgpq4 >/dev/null || {
 	echo "bgpq4 command not found" >&2
 	exit 1
 }

@@ -15,7 +15,7 @@ FILTERS_V6=$DIR/config/filters.v6
 
 [ -f "$AS_CONFIG_FILE" ] && . "$AS_CONFIG_FILE"
 
-command -v bgpq4 || {
+command -v bgpq4 >/dev/null || {
 	echo "bgpq4 command not found" >&2
 	exit 1
 }
@@ -60,9 +60,11 @@ echo "-A CUSTOMER-IN -j RETURN" >> $TMP
 echo "-A CUSTOMER-OUT -j DROP-INVALID" >> $TMP
 echo "-A CUSTOMER-OUT -j RETURN" >> $TMP
 
+echo "-A PEER-IN -j DROP-INVALID" >> $TMP
 bgpq4 -6 -F "-A PEER-IN -d %n/%l -j RETURN\n" "$SELF_OBJ" >> $TMP
 echo "-A PEER-IN -j DROP" >> $TMP
 
+echo "-A PEER-OUT -j DROP-INVALID" >> $TMP
 bgpq4 -6 -F "-A PEER-OUT -s %n/%l -j RETURN\n" "$SELF_OBJ" >> $TMP
 echo "-A PEER-OUT -j DROP" >> $TMP
 
