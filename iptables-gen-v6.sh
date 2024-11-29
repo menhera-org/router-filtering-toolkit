@@ -20,8 +20,8 @@ command -v bgpq4 >/dev/null || {
 	exit 1
 }
 
-if [ -n "$IRR_SEVER" ]; then
-	BGPQ4="bgpq4 -h $IRR_SEVER"
+if [ -n "$IRR_SERVER" ]; then
+	BGPQ4="bgpq4 -h $IRR_SERVER"
 else
 	BGPQ4="bgpq4"
 fi
