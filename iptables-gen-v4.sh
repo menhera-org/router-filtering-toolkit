@@ -20,6 +20,12 @@ command -v bgpq4 >/dev/null || {
 	exit 1
 }
 
+if [ -n "$IRR_SEVER" ]; then
+	BGPQ4="bgpq4 -h $IRR_SEVER"
+else
+	BGPQ4="bgpq4"
+fi
+
 TMP=$( mktemp /tmp/iptables-v4.XXXXXX )
 trap 'rm -f $TMP' EXIT
 
@@ -56,11 +62,11 @@ echo "-A CUSTOMER-OUT -j DROP-INVALID" >> $TMP
 echo "-A CUSTOMER-OUT -j RETURN" >> $TMP
 
 echo "-A PEER-IN -j DROP-INVALID" >> $TMP
-bgpq4 -4 -F "-A PEER-IN -d %n/%l -j RETURN\n" "$SELF_OBJ" >> $TMP
+$BGPQ4 -4 -F "-A PEER-IN -d %n/%l -j RETURN\n" "$SELF_OBJ" >> $TMP
 echo "-A PEER-IN -j DROP" >> $TMP
 
 echo "-A PEER-OUT -j DROP-INVALID" >> $TMP
-bgpq4 -4 -F "-A PEER-OUT -s %n/%l -j RETURN\n" "$SELF_OBJ" >> $TMP
+$BGPQ4 -4 -F "-A PEER-OUT -s %n/%l -j RETURN\n" "$SELF_OBJ" >> $TMP
 echo "-A PEER-OUT -j DROP" >> $TMP
 
 strip_comments < "$IFS_CUSTOMER" | while read -r iface ; do
